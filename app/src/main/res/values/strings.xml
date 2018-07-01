@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TechReporter</string>
+    <string name="image">Image Poster</string>
+    <string name="news_title">News Title</string>
+    <string name="news_description">News Description</string>
+    <string name="date_published">Date Published</string>
 </resources>
