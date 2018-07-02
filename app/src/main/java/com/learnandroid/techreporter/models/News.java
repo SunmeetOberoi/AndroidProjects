@@ -1,10 +1,5 @@
 package com.learnandroid.techreporter.models;
 
-import android.util.Log;
-
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
 public class News {
 
     String author;

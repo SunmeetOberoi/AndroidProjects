@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">TechReporter</string>
+    <string name="app_name">Tech Reporter</string>
     <string name="image">Image Poster</string>
     <string name="news_title">News Title</string>
     <string name="news_description">News Description</string>
     <string name="date_published">Date Published</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>

@@ -1,13 +1,16 @@
 package com.learnandroid.techreporter.activities;
 
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 
 import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.adapters.RecyclerViewAdapter;
@@ -21,7 +24,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
     List<News> news;
     @BindView(R.id.rvNews)
     RecyclerView rvNews;
+    ImageButton credit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
         initializeData();
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -51,7 +55,15 @@ public class MainActivity extends AppCompatActivity {
         rvNews.setAdapter(adapter);
 
 
+
     }
+
+
+    public void poweredbyNewsAPI(View view){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://newsapi.org/"));
+        this.startActivity(intent);
+    }
+
 
     private void initializeData() {
         news = new ArrayList<>();
