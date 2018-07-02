@@ -12,6 +12,15 @@ public class News {
     String path_to_image;
     String date;
 
+    public News(String author, String title, String description, String path_to_news, String path_to_image, String date) {
+        this.author = author;
+        this.title = title;
+        Description = description;
+        this.path_to_news = path_to_news;
+        this.path_to_image = path_to_image;
+        this.date = date;
+    }
+
     public String getAuthor() {
         return author;
     }
