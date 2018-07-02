@@ -1,28 +1,25 @@
 package com.learnandroid.techreporter.activities;
 
-import android.app.VoiceInteractor;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.adapters.RecyclerViewAdapter;
 import com.learnandroid.techreporter.models.News;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         initializeData();
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
 
         rvNews.setHasFixedSize(true);
         rvNews.setLayoutManager(llm);
+
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(this,news);
 
         rvNews.setAdapter(adapter);
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeData() {
         news = new ArrayList<>();
-
+        final boolean[] stop = {true};
         Thread Json = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,12 +67,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                     is.close();
                     JSONObject object = new JSONObject(sb.toString());
+                    stop[0] =false;
                     Log.d("JSON",object.toString());
                 } catch (Exception e){
                     Log.e("URL",e.getMessage());
                 }
             }
         });Json.start();
+
+        while(stop[0]);
 
         Log.d("JSON", "Reached");
         news.add(new News("Catherine Shu","500px nixes Creative Commons option and replaces Marketplace with Getty and Visual China Group partnerships","Photographers who use 500px to distribute their work are now adjusting to two big changes. First, the platform is removing the option to upload or download photos with a Creative Commons license. On Saturday, it also shut down its stock photo platform 500px M…", "https://techcrunch.com/2018/07/01/500px-nixes-creative-commons-option-and-replaces-marketplace-with-getty-and-visual-china-group-partnerships/", "https://techcrunch.com/wp-content/uploads/2016/09/500px.jpg?w=711","2018-07-02T03:19:41Z"));

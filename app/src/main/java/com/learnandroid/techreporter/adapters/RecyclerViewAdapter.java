@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.learnandroid.techreporter.R;
+import com.learnandroid.techreporter.activities.MainActivity;
 import com.learnandroid.techreporter.models.News;
 import com.squareup.picasso.Picasso;
 
