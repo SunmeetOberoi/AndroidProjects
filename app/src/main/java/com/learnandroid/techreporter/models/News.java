@@ -1,5 +1,6 @@
 package com.learnandroid.techreporter.models;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class News {
@@ -9,7 +10,7 @@ public class News {
     String Description;
     String path_to_news;
     String path_to_image;
-    Date date;
+    String date;
 
     public String getAuthor() {
         return author;
@@ -51,11 +52,14 @@ public class News {
         this.path_to_image = path_to_image;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(String date) {
+        this.date="";
+        for (int i=0;date.charAt(i)!='T';i++){
+            this.date = this.date + date.charAt(i);
+        }
     }
 }
