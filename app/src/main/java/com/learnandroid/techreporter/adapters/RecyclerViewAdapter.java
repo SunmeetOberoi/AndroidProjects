@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.tvTitle.setText(techNews.getTitle());
         holder.tvDescription.setText(techNews.getDescription());
         holder.tvAuthor.setText(techNews.getAuthor());
-        holder.tvDatePublished.setText(techNews.getDate());
+        holder.tvDatePublished.setText(techNews.getDate_time());
 
         Picasso.get()
                 .load(techNews.getPath_to_image())
