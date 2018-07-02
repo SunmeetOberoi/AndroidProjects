@@ -1,8 +1,11 @@
 package com.learnandroid.techreporter.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,9 @@ import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.models.News;
 import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return news.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.ivNewsImage)
         ImageView ivNewsImage;
         @BindView(R.id.tvTitle)
@@ -67,6 +73,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.get(getAdapterPosition()).getPath_to_news()));
+            context.startActivity(browserIntent);
         }
     }
 }
