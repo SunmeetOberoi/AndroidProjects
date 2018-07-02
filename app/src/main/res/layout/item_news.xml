@@ -13,43 +13,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rlNewsContent"
+        <ImageView
+            android:id="@+id/ivNewsImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image"
+            app:srcCompat="@mipmap/ic_launcher" />
 
-            <ImageView
-                android:id="@+id/ivNewsImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:contentDescription="@string/image"
-                app:srcCompat="@mipmap/ic_launcher" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            tools:text="@string/news_title" />
 
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_toEndOf="@id/ivNewsImage"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_toRightOf="@id/ivNewsImage"
-                android:maxLength="25"
-                tools:text="@string/news_title" />
-
-            <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearance"
-                android:layout_toEndOf="@+id/ivNewsImage"
-                android:layout_toRightOf="@id/ivNewsImage"
-                android:layout_below="@id/tvTitle"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                tools:text="@string/news_description" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearance"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            tools:text="@string/news_description" />
 
         <RelativeLayout
             android:id="@+id/rlNewsInfo"
@@ -64,6 +49,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:background="@android:color/darker_gray" />
+
             <TextView
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"
