@@ -21,10 +21,12 @@ public class News {
     private void formatDateTime(String date_time) {
         this.date_time="";
         int i;
+        //Separate Date
         for (i=0;date_time.charAt(i)!='T';i++)
             this.date_time = this.date_time + date_time.charAt(i);
         this.date_time=this.date_time + " ";
         i++;
+        //Separate Time TODO: Change Time Zone
         for (;date_time.charAt(i)!='Z';i++){
             this.date_time = this.date_time + date_time.charAt(i);
         }
