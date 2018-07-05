@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //TODO: Move API credit to app bar
     public void poweredbyNewsAPI(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://newsapi.org/"));
         this.startActivity(intent);

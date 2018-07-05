@@ -79,6 +79,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
+            //TODO: Use a Webview
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.get(getAdapterPosition()).getPath_to_news()));
             context.startActivity(browserIntent);
         }
