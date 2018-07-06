@@ -4,5 +4,5 @@
     <string name="news_title">News Title</string>
     <string name="news_description">News Description</string>
     <string name="date_published">Date Published</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="source">Powered By News API</string>
 </resources>

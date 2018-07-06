@@ -8,9 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.support.v7.widget.Toolbar;
 
 import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.adapters.RecyclerViewAdapter;
@@ -30,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//TODO: Retry fetching data when the network is back and showing error in case no network
 public class MainActivity extends AppCompatActivity {
 
     List<News> news = new ArrayList<>();
@@ -44,9 +48,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         getNews get_news = new getNews();
         get_news.execute();
 
+        //TODO: Try other layoutManagers
         LinearLayoutManager llm = new LinearLayoutManager(this);
 
         rvNews.setHasFixedSize(true);
@@ -59,8 +67,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //TODO: Move API credit to app bar
-    public void poweredbyNewsAPI(View view) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id)
+        {
+            case R.id.action_source: return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void poweredbyNewsAPI(MenuItem item) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra("URL", "https://newsapi.org/");
         this.startActivity(intent);
