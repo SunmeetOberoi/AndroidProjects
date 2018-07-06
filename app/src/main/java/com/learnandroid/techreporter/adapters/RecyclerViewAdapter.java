@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.activities.MainActivity;
+import com.learnandroid.techreporter.activities.WebViewActivity;
 import com.learnandroid.techreporter.models.News;
 import com.squareup.picasso.Picasso;
 
@@ -79,9 +80,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            //TODO: Use a Webview
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(news.get(getAdapterPosition()).getPath_to_news()));
-            context.startActivity(browserIntent);
+            Intent intent = new Intent(context, WebViewActivity.class);
+            intent.putExtra("URL", news.get(getAdapterPosition()).getPath_to_news());
+            context.startActivity(intent);
         }
     }
 }
