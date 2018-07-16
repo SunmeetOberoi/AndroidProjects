@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.support.v7.widget.Toolbar;
 
+import com.learnandroid.techreporter.BuildConfig;
 import com.learnandroid.techreporter.R;
 import com.learnandroid.techreporter.adapters.RecyclerViewAdapter;
 import com.learnandroid.techreporter.models.News;
@@ -108,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
         protected List<News> doInBackground(Void... voids) {
             List<News> latestNews = new ArrayList<>();
             try {
-                InputStream is = new URL("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=49d0e3d467744d8d8185bf84162ec9d6").openStream();
+                //Paste your API key here
+                String API = BuildConfig.Source;
+                InputStream is = new URL("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=" + API).openStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
                 int ch;
@@ -124,11 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 Log.e("ERROR", e.getMessage());
-            }
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
             return latestNews;
         }
