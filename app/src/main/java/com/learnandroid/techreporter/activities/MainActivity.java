@@ -40,6 +40,13 @@ import butterknife.ButterKnife;
 //TODO: Retry fetching data when the network is back and showing error in case no network
 public class MainActivity extends AppCompatActivity {
 
+
+    //Paste your API key here
+    //---------
+    String API = BuildConfig.Source;
+    //---------
+    ///////////////////////////
+
     List<News> news = new ArrayList<>();
     @BindView(R.id.rvNews)
     RecyclerView rvNews;
@@ -110,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         protected List<News> doInBackground(Void... voids) {
             List<News> latestNews = new ArrayList<>();
             try {
-                //Paste your API key here
-                String API = BuildConfig.Source;
                 InputStream is = new URL("https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=" + API).openStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
