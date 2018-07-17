@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Title" />
+
+        <TextView
+            android:id="@+id/tvSeason"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:text="Season"/>
+
+        <Button
+            android:id="@+id/btnSeason"
+            android:layout_below="@+id/tvSeason"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="none"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="0"/>
+
+        <TextView
+            android:id="@+id/tvEpisode"
+            android:layout_marginRight="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_alignParentRight="true"
+            android:text="Episode"/>
+
+        <Button
+            android:id="@+id/btnEpisode"
+            android:layout_below="@+id/tvEpisode"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="none"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="0"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
