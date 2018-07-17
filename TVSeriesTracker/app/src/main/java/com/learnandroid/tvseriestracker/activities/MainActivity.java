@@ -21,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
     }
+    public static void ite(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
