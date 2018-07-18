@@ -26,7 +26,8 @@ public class Add_EditActivity extends AppCompatActivity {
         final EditText etTitle = (EditText) findViewById(R.id.etTitle);
         final NumberPicker npSeason = (NumberPicker) findViewById(R.id.npSeason);
         final NumberPicker npEpisode = (NumberPicker) findViewById(R.id.npEpisodes);
-        Button btnAdd = (Button) findViewById(R.id.btnAdd);
+        Button btnAdd_Save = (Button) findViewById(R.id.btnAdd_Save);
+        boolean newSeries = true;
 
         //Set the Pickers
         npSeason.setMinValue(1);
@@ -34,13 +35,32 @@ public class Add_EditActivity extends AppCompatActivity {
         npEpisode.setMinValue(0);
         npEpisode.setMaxValue(100);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        String key = "";
+        if(intent.getExtras() != null){
+            Bundle b = new Bundle();
+            b = intent.getExtras();
+            etTitle.setText(b.getString("title"));
+            npSeason.setValue(b.getInt("season"));
+            npEpisode.setValue(b.getInt("episode"));
+            btnAdd_Save.setText("Save");
+            newSeries=false;
+            key = b.getString("title");
+        }
+
+        final boolean finalNewSeries = newSeries;
+        final String finalKey = key;
+        btnAdd_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Series series = new Series(etTitle.getText().toString(), npSeason.getValue(), npEpisode.getValue());
-                dao.add_series(series);
+                if(finalNewSeries)
+                    dao.add_series(series);
+                else
+                    dao.updateSeries(finalKey, series);
                 startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
             }
         });
     }
+
 }

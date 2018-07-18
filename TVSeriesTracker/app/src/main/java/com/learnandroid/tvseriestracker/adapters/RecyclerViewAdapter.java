@@ -1,6 +1,7 @@
 package com.learnandroid.tvseriestracker.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.learnandroid.tvseriestracker.R;
+import com.learnandroid.tvseriestracker.activities.Add_EditActivity;
 import com.learnandroid.tvseriestracker.activities.MainActivity;
 import com.learnandroid.tvseriestracker.model.Series;
 
@@ -55,11 +57,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvTitle = itemView.findViewById(R.id.tvTitle);
             btnSeason = itemView.findViewById(R.id.btnSeason);
             btnEpisode = itemView.findViewById(R.id.btnEpisode);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public boolean onLongClick(View v) {
-            //TODO: Open Edit Activity
+            Intent intent = new Intent(context, Add_EditActivity.class);
+            intent.putExtra("title", this.tvTitle.getText().toString());
+            intent.putExtra("season", Integer.valueOf(this.btnSeason.getText().toString()));
+            intent.putExtra("episode", Integer.valueOf(this.btnEpisode.getText().toString()));
+            context.startActivity(intent);
             return true;
         }
     }

@@ -59,4 +59,14 @@ public class DataBaseDAO {
         cursor.close();
         return serials;
     }
+
+    public void updateSeries(String key, Series series){
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITLE, series.getTitle());
+        values.put(COLUMN_SEASON, series.getSeason());
+        values.put(COLUMN_EPISODES, series.getEpisode());
+
+        database.update(TABLE_NAME, values, COLUMN_TITLE + "=?",new String[]{key});
+    }
 }
