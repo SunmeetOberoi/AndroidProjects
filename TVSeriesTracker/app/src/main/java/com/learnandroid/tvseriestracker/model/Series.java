@@ -4,6 +4,7 @@ public class Series {
 
     private String title;
     private int season;
+
     private int episode;
 
     public Series(String title, int season, int episode) {
