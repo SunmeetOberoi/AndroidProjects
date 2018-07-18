@@ -34,18 +34,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Create DataBase object
         dao = new DataBaseDAO(this);
         dao.open();
 
+        //Populate the list with already stored Dataset
         seriesList = dao.getAllSeries();
 
+
+        //set Recycler View
         recyclerView = (RecyclerView) findViewById(R.id.rvTVSeries);
-
         LinearLayoutManager llm = new LinearLayoutManager(this);
-
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(llm);
-
         recyclerViewAdapter = new RecyclerViewAdapter(this, seriesList);
         recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        //Refreshes when activity resumes
         seriesList.clear();
         seriesList.addAll(dao.getAllSeries());
         recyclerViewAdapter.notifyDataSetChanged();
