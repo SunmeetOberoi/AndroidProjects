@@ -2,6 +2,8 @@ package com.learnandroid.tvseriestracker.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.activities.Add_EditActivity;
 import com.learnandroid.tvseriestracker.activities.MainActivity;
+import com.learnandroid.tvseriestracker.database.DataBaseDAO;
 import com.learnandroid.tvseriestracker.model.Series;
 
 import java.util.List;
@@ -21,6 +24,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     List<Series> seriesList;
     Context context;
+    DataBaseDAO dao;
 
     public  RecyclerViewAdapter(Context context, List<Series> seriesList)
     {
@@ -36,11 +40,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        Series series = seriesList.get(position);
+    public void onBindViewHolder(@NonNull final RecyclerViewAdapter.ViewHolder holder, int position) {
+        final Series series = seriesList.get(position);
         holder.tvTitle.setText(series.getTitle());
         holder.btnSeason.setText(String.valueOf(series.getSeason()));
         holder.btnEpisode.setText(String.valueOf(series.getEpisode()));
+        dao = new DataBaseDAO(context);
+        dao.open();
+        holder.btnEpisode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Series updatesSeries = new Series(series.getTitle(), series.getSeason(), series.getEpisode() + 1);
+                dao.updateSeries(series.getTitle(), updatesSeries);
+                holder.btnEpisode.setText(String.valueOf(Integer.valueOf(holder.btnEpisode.getText().toString()) + 1));
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(100);
+            }
+        });
     }
 
     @Override
