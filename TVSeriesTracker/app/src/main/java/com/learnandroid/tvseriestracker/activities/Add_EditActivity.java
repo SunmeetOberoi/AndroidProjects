@@ -35,6 +35,7 @@ public class Add_EditActivity extends AppCompatActivity {
         npEpisode.setMinValue(0);
         npEpisode.setMaxValue(100);
 
+        //Check if called as edit activity
         Intent intent = getIntent();
         String key = "";
         if(intent.getExtras() != null){
@@ -54,8 +55,10 @@ public class Add_EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Series series = new Series(etTitle.getText().toString(), npSeason.getValue(), npEpisode.getValue());
+                //if new series
                 if(finalNewSeries)
                     dao.add_series(series);
+                //if edit already existing series
                 else
                     dao.updateSeries(finalKey, series);
                 startActivity(new Intent(Add_EditActivity.this, MainActivity.class));

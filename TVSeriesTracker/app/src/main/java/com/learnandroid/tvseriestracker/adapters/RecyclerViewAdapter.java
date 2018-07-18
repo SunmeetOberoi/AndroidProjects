@@ -46,17 +46,38 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.btnSeason.setText(String.valueOf(series.getSeason()));
         holder.btnEpisode.setText(String.valueOf(series.getEpisode()));
         dao = new DataBaseDAO(context);
+        final Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+
+
+        //Listener for updating Episode
         holder.btnEpisode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dao.open();
-                Series updatesSeries = new Series(seriesList.get(position).getTitle(),
-                        seriesList.get(position).getSeason(),
-                        Integer.valueOf(holder.btnEpisode.getText().toString()) + 1);
+                int newEpisode = Integer.valueOf(holder.btnEpisode.getText().toString()) + 1;
+                Series updatedSeries = new Series(seriesList.get(position).getTitle(),
+                        Integer.valueOf(holder.btnSeason.getText().toString()),
+                        newEpisode);
 
-                dao.updateSeries(series.getTitle(), updatesSeries);
-                holder.btnEpisode.setText(String.valueOf(Integer.valueOf(holder.btnEpisode.getText().toString()) + 1));
-                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                dao.updateSeries(series.getTitle(), updatedSeries);
+                holder.btnEpisode.setText(String.valueOf(newEpisode));
+                vibrator.vibrate(100);
+                dao.close();
+            }
+        });
+        //Listener for updating season and resetting episode
+        holder.btnSeason.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dao.open();
+                int newSeason = Integer.valueOf(holder.btnSeason.getText().toString()) + 1;
+                Series updatedSeries = new Series(seriesList.get(position).getTitle(),
+                        newSeason,
+                        0);
+
+                dao.updateSeries(series.getTitle(), updatedSeries);
+                holder.btnSeason.setText(String.valueOf(newSeason));
+                holder.btnEpisode.setText("0");
                 vibrator.vibrate(100);
                 dao.close();
             }
