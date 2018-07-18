@@ -25,10 +25,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE " +
                 TABLE_NAME + " (" +
-                _ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_TITLE + "TEXT NOT NULL, " +
-                COLUMN_SEASON + "INTEGER, " +
-                COLUMN_EPISODES + "INTEGER)";
+                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_TITLE + " TEXT NOT NULL, " +
+                COLUMN_SEASON + " INTEGER, " +
+                COLUMN_EPISODES + " INTEGER)";
         db.execSQL(CREATE_TABLE);
     }
 
