@@ -10,6 +10,7 @@ import android.util.Log;
 import com.learnandroid.tvseriestracker.model.Series;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.learnandroid.tvseriestracker.database.DataBaseHelper.COLUMN_EPISODES;
 import static com.learnandroid.tvseriestracker.database.DataBaseHelper.COLUMN_SEASON;
@@ -43,8 +44,8 @@ public class DataBaseDAO {
             Log.e("DAO", "Unable to perform insert operation");
     }
 
-    public ArrayList<Series> getAllSeries(){
-        ArrayList<Series> serials = new ArrayList<>();
+    public List<Series> getAllSeries(){
+        List<Series> serials = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
