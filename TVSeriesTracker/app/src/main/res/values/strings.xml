@@ -4,4 +4,5 @@
     <string name="title_hint">Title</string>
     <string name="numberpicker_season">Season</string>
     <string name="numberpicker_episode">Episode</string>
+    <string name="action_delete">Delete</string>
 </resources>
