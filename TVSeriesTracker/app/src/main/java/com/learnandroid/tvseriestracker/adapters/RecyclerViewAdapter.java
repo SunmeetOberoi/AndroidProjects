@@ -2,7 +2,6 @@ package com.learnandroid.tvseriestracker.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.activities.Add_EditActivity;
-import com.learnandroid.tvseriestracker.activities.MainActivity;
 import com.learnandroid.tvseriestracker.database.DataBaseDAO;
 import com.learnandroid.tvseriestracker.model.Series;
 

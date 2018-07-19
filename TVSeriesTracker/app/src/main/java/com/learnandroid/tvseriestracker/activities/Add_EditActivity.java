@@ -1,11 +1,12 @@
 package com.learnandroid.tvseriestracker.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,14 +34,14 @@ public class Add_EditActivity extends AppCompatActivity {
         dao = new DataBaseDAO(this);
         dao.open();
         //Initialise toolbar to add series type
-        menu_type=R.menu.menu_edit_plain;
+        menu_type = R.menu.menu_edit_plain;
 
         //Bind Views
         final EditText etTitle = (EditText) findViewById(R.id.etTitle);
         final NumberPicker npSeason = (NumberPicker) findViewById(R.id.npSeason);
         final NumberPicker npEpisode = (NumberPicker) findViewById(R.id.npEpisodes);
         Button btnAdd_Save = (Button) findViewById(R.id.btnAdd_Save);
-        setSupportActionBar((Toolbar)findViewById(R.id.add_edit_toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.add_edit_toolbar));
 
         //Set the Pickers
         npSeason.setMinValue(1);
@@ -50,7 +51,7 @@ public class Add_EditActivity extends AppCompatActivity {
 
         //Check if called as edit activity
         Intent intent = getIntent();
-        if(intent.getExtras() != null){
+        if (intent.getExtras() != null) {
             Bundle b = new Bundle();
             b = intent.getExtras();
             //Set the views to display the series content which is being edited
@@ -58,7 +59,7 @@ public class Add_EditActivity extends AppCompatActivity {
             npSeason.setValue(b.getInt("season"));
             npEpisode.setValue(b.getInt("episode"));
             btnAdd_Save.setText("Save");
-            newSeries=false;
+            newSeries = false;
             key = b.getString("title");
             menu_type = R.menu.menu_edit_delete;
         }
@@ -68,9 +69,9 @@ public class Add_EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Series series = new Series(etTitle.getText().toString(), npSeason.getValue(), npEpisode.getValue());
                 //if new series
-                if(newSeries)
+                if (newSeries)
                     dao.add_series(series);
-                //if editing already existing series
+                    //if editing already existing series
                 else
                     dao.updateSeries(key, series);
                 startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
@@ -88,9 +89,27 @@ public class Add_EditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if(id == R.id.action_delete){
-            dao.deleteSeries(key);
-            startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
+        if (id == R.id.action_delete) {
+            LayoutInflater layoutInflater = LayoutInflater.from(Add_EditActivity.this);
+            View dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Add_EditActivity.this);
+            builder.setView(dialogView);
+            builder
+                    .setCancelable(true)
+                    .setPositiveButton(getString(R.string.confirm_delete_positive), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dao.deleteSeries(key);
+                            startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.confirm_delete_negative), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create()
+                    .show();
             return true;
         }
         return super.onOptionsItemSelected(item);
