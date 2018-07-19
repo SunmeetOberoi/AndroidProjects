@@ -69,4 +69,8 @@ public class DataBaseDAO {
 
         database.update(TABLE_NAME, values, COLUMN_TITLE + "=?",new String[]{key});
     }
+
+    public void deleteSeries(String key){
+        database.delete(TABLE_NAME, COLUMN_TITLE + "=?", new String[]{key});
+    }
 }

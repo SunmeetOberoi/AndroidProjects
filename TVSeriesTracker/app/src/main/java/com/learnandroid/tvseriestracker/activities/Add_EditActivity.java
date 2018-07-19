@@ -2,6 +2,7 @@ package com.learnandroid.tvseriestracker.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,14 +20,19 @@ import com.learnandroid.tvseriestracker.model.Series;
 public class Add_EditActivity extends AppCompatActivity {
 
     int menu_type;
+    String key = "";
+    DataBaseDAO dao;
+    boolean newSeries = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_edit_activity);
 
-        final DataBaseDAO dao = new DataBaseDAO(this);
+        dao = new DataBaseDAO(this);
         dao.open();
+        //Initialise toolbar to add series type
         menu_type=R.menu.menu_edit_plain;
 
         //Bind Views
@@ -35,7 +41,6 @@ public class Add_EditActivity extends AppCompatActivity {
         final NumberPicker npEpisode = (NumberPicker) findViewById(R.id.npEpisodes);
         Button btnAdd_Save = (Button) findViewById(R.id.btnAdd_Save);
         setSupportActionBar((Toolbar)findViewById(R.id.add_edit_toolbar));
-        boolean newSeries = true;
 
         //Set the Pickers
         npSeason.setMinValue(1);
@@ -45,10 +50,10 @@ public class Add_EditActivity extends AppCompatActivity {
 
         //Check if called as edit activity
         Intent intent = getIntent();
-        String key = "";
         if(intent.getExtras() != null){
             Bundle b = new Bundle();
             b = intent.getExtras();
+            //Set the views to display the series content which is being edited
             etTitle.setText(b.getString("title"));
             npSeason.setValue(b.getInt("season"));
             npEpisode.setValue(b.getInt("episode"));
@@ -58,18 +63,16 @@ public class Add_EditActivity extends AppCompatActivity {
             menu_type = R.menu.menu_edit_delete;
         }
 
-        final boolean finalNewSeries = newSeries;
-        final String finalKey = key;
         btnAdd_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Series series = new Series(etTitle.getText().toString(), npSeason.getValue(), npEpisode.getValue());
                 //if new series
-                if(finalNewSeries)
+                if(newSeries)
                     dao.add_series(series);
-                //if edit already existing series
+                //if editing already existing series
                 else
-                    dao.updateSeries(finalKey, series);
+                    dao.updateSeries(key, series);
                 startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
             }
         });
@@ -86,7 +89,8 @@ public class Add_EditActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.action_delete){
-            //delete
+            dao.deleteSeries(key);
+            startActivity(new Intent(Add_EditActivity.this, MainActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
