@@ -2,10 +2,8 @@ package com.learnandroid.techreporter.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.learnandroid.techreporter.R;
-import com.learnandroid.techreporter.activities.MainActivity;
 import com.learnandroid.techreporter.activities.WebViewActivity;
 import com.learnandroid.techreporter.models.News;
 import com.squareup.picasso.Picasso;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
 import butterknife.BindView;

@@ -1,22 +1,18 @@
 package com.learnandroid.techreporter.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
-import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.support.v7.widget.Toolbar;
 
 import com.learnandroid.techreporter.BuildConfig;
 import com.learnandroid.techreporter.R;
@@ -24,7 +20,6 @@ import com.learnandroid.techreporter.adapters.RecyclerViewAdapter;
 import com.learnandroid.techreporter.models.News;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -89,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        switch (id)
-        {
-            case R.id.action_source: return true;
+        switch (id) {
+            case R.id.action_source:
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

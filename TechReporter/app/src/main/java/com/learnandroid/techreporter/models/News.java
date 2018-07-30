@@ -1,13 +1,9 @@
 package com.learnandroid.techreporter.models;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
 public class News {
 

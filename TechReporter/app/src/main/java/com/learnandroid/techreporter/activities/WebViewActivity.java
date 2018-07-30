@@ -15,7 +15,10 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         WebView webView = (WebView) findViewById(R.id.wvWebView);
+        String URL = getIntent().getStringExtra("URL");
+        if(URL.equals("https://newsapi.org/"))
+            webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(getIntent().getStringExtra("URL"));
+        webView.loadUrl(URL);
     }
 }
