@@ -8,4 +8,6 @@
     <string name="dialog_confirm_delete">Are you sure you want to delete this series?</string>
     <string name="confirm_delete_negative">No</string>
     <string name="confirm_delete_positive">Yes</string>
+    <string name="action_search">Search</string>
+    <string name="search_hint">Series</string>
 </resources>
