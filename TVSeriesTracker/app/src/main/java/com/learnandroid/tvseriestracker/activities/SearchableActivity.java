@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.adapters.RecyclerViewAdapter;
@@ -52,10 +54,17 @@ public class SearchableActivity extends AppCompatActivity {
     private void search(String query) {
         List<Series> database = dao.getAllSeries();
         seriesList.clear();
-        for(int i=0;i<database.size();i++)
-            //TODO: optimize search results
-            if(database.get(i).getTitle().toLowerCase().equals(query.toLowerCase()))
+        int status;
+        for(int i=0;i<database.size();i++) {
+            status = 0;
+            for (int j = 0; j < database.get(i).getTitle().length() && j < query.length(); j++)
+                if (Character.toLowerCase(database.get(i).getTitle().charAt(j)) == Character.toLowerCase(query.charAt(j)))
+                    status++;
+            if(status == query.length())
                 seriesList.add(database.get(i));
+        }
+        if(seriesList.size() == 0)
+            findViewById(R.id.tvNoMatch).setVisibility(View.VISIBLE);
         recyclerViewAdapter.notifyDataSetChanged();
     }
 }
