@@ -6,6 +6,7 @@
     <string name="numberpicker_episode">Episode</string>
     <string name="action_delete">Delete</string>
     <string name="dialog_confirm_delete">Are you sure?</string>
+    <string name="dialog_title_confirm_delete">Confirm Delete</string>
     <string name="confirm_delete_negative">No</string>
     <string name="confirm_delete_positive">Yes</string>
     <string name="action_search">Search</string>

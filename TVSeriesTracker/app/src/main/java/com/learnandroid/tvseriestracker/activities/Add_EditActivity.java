@@ -90,12 +90,11 @@ public class Add_EditActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_delete) {
-            LayoutInflater layoutInflater = LayoutInflater.from(Add_EditActivity.this);
-            View dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete, null);
             AlertDialog.Builder builder = new AlertDialog.Builder(Add_EditActivity.this);
-            builder.setView(dialogView);
             builder
                     .setCancelable(true)
+                    .setTitle(R.string.dialog_title_confirm_delete)
+                    .setMessage(R.string.dialog_confirm_delete)
                     .setPositiveButton(getString(R.string.confirm_delete_positive), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
