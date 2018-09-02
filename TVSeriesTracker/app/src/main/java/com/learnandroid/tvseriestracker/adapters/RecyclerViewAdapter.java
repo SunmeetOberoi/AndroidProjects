@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.activities.Add_EditActivity;
-import com.learnandroid.tvseriestracker.activities.MainActivity;
 import com.learnandroid.tvseriestracker.database.DataBaseDAO;
 import com.learnandroid.tvseriestracker.helper.ItemTouchHelperAdapter;
 import com.learnandroid.tvseriestracker.model.Series;

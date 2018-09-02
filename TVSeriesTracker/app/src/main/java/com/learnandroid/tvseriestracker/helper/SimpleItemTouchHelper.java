@@ -2,13 +2,10 @@ package com.learnandroid.tvseriestracker.helper;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
-
-import com.learnandroid.tvseriestracker.R;
-import com.learnandroid.tvseriestracker.helper.ItemTouchHelperAdapter;
 
 public class SimpleItemTouchHelper extends ItemTouchHelper.Callback {
     private final ItemTouchHelperAdapter mAdapter;
+    public boolean dragState = true;
 
     public SimpleItemTouchHelper(ItemTouchHelperAdapter mAdapter) {
         this.mAdapter = mAdapter;
@@ -16,7 +13,7 @@ public class SimpleItemTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return true;
+        return dragState;
     }
 
     @Override
