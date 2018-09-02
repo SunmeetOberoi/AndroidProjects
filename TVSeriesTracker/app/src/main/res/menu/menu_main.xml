@@ -15,4 +15,9 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add_white"/>
 
+    <item
+        android:id="@+id/edit"
+        android:title="@string/rearrange"
+        app:showAsAction="never" />
+
 </menu>

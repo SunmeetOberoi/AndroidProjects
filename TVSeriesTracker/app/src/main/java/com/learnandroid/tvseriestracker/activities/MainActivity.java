@@ -5,9 +5,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +19,7 @@ import android.view.MenuItem;
 
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.adapters.RecyclerViewAdapter;
+import com.learnandroid.tvseriestracker.helper.SimpleItemTouchHelper;
 import com.learnandroid.tvseriestracker.database.DataBaseDAO;
 import com.learnandroid.tvseriestracker.model.Series;
 
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
     DataBaseDAO dao;
+    FloatingActionButton fabSaveToDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        fabSaveToDatabase = (FloatingActionButton) findViewById(R.id.fabSaveToDatabase);
+
 
         //Create DataBase object
         dao = new DataBaseDAO(this);
@@ -50,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(llm);
         recyclerViewAdapter = new RecyclerViewAdapter(this, seriesList);
         recyclerView.setAdapter(recyclerViewAdapter);
+
+
+
+        fabSaveToDatabase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dao.updateDatabase(recyclerViewAdapter.seriesList);
+                fabSaveToDatabase.setVisibility(View.GONE);
+            }
+        });
 
         //TODO: Display a message if no series are currently in the database
     }
@@ -87,6 +105,14 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
             startActivity(new Intent(this, Add_EditActivity.class));
+            return true;
+        }
+        if(id == R.id.edit){
+            fabSaveToDatabase.setVisibility(View.VISIBLE);
+            ItemTouchHelper.Callback callback =
+                    new SimpleItemTouchHelper(recyclerViewAdapter);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+            touchHelper.attachToRecyclerView(recyclerView);
             return true;
         }
 

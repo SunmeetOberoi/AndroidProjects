@@ -13,14 +13,18 @@ import android.widget.TextView;
 
 import com.learnandroid.tvseriestracker.R;
 import com.learnandroid.tvseriestracker.activities.Add_EditActivity;
+import com.learnandroid.tvseriestracker.activities.MainActivity;
 import com.learnandroid.tvseriestracker.database.DataBaseDAO;
+import com.learnandroid.tvseriestracker.helper.ItemTouchHelperAdapter;
 import com.learnandroid.tvseriestracker.model.Series;
 
+import java.util.Collections;
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
+        implements ItemTouchHelperAdapter {
 
-    List<Series> seriesList;
+    public List<Series> seriesList;
     Context context;
     DataBaseDAO dao;
 
@@ -87,7 +91,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return seriesList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(seriesList, i, i+1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(seriesList, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+
+        return true;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle;
         Button btnSeason;
         Button btnEpisode;
@@ -96,17 +116,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             tvTitle = itemView.findViewById(R.id.tvTitle);
             btnSeason = itemView.findViewById(R.id.btnSeason);
             btnEpisode = itemView.findViewById(R.id.btnEpisode);
-            itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
-        public boolean onLongClick(View v) {
+        public void onClick(View v) {
             Intent intent = new Intent(context, Add_EditActivity.class);
             intent.putExtra("title", this.tvTitle.getText().toString());
             intent.putExtra("season", Integer.valueOf(this.btnSeason.getText().toString()));
             intent.putExtra("episode", Integer.valueOf(this.btnEpisode.getText().toString()));
             context.startActivity(intent);
-            return true;
         }
     }
 }
