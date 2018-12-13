@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignUp;
     ProgressBar pbLoading;
     FirebaseAuth mAuth;
-    String TAG = "login";
+    String TAG = "signin/singup";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +44,35 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validInput()) {
+                    pbLoading.setVisibility(View.VISIBLE);
+                    signinUser();
+                }
+            }
+        });
+
+    }
+
+    private void signinUser() {
+        mAuth.signInWithEmailAndPassword(etEmail.getText().toString().trim(),
+            etPassword.getText().toString().trim())
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        update(mAuth.getCurrentUser());
+                    }else{
+                        Toast.makeText(LoginActivity.this,
+                                String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT)
+                        .show();
+                        pbLoading.setVisibility(View.GONE);
+                        Log.d(TAG, String.valueOf(task.getException()));
+                    }
+                }
+            });
     }
 
     private boolean validInput() {
@@ -74,8 +103,8 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             update(user);
                         }else{
-                            Toast.makeText(LoginActivity.this, "Authentication failed",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,
+                                    String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
                             pbLoading.setVisibility(View.GONE);
                             Log.d(TAG, String.valueOf(task.getException()));
                         }
