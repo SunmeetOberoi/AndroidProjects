@@ -68,5 +68,12 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
 
 </RelativeLayout>
