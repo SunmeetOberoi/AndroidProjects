@@ -1,9 +1,9 @@
 package com.learnandroid.chatapplication;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +15,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import static com.learnandroid.chatapplication.ApplicationClass.mAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,7 +27,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignIn;
     Button btnSignUp;
     ProgressBar pbLoading;
-    FirebaseAuth mAuth;
     DatabaseReference database;
     String TAG = "signin/singup";
 
@@ -74,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(task.isSuccessful()){
                         database.child("Users").child(mAuth.getCurrentUser().getEmail()
                                 .replace('.', ',')).child("Status").setValue("Online");
-                        showContacts(mAuth.getCurrentUser().getEmail().split("@")[0]);
+                        showContacts();
                     }else{
                         Toast.makeText(LoginActivity.this,
                                 String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT)
@@ -117,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                             database.child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Status")
                                     .setValue("Online");
-                            showContacts(mAuth.getCurrentUser().getEmail().split("@")[0]);
+                            showContacts();
                         }else{
                             Toast.makeText(LoginActivity.this,
                                     String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
@@ -128,11 +124,10 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void showContacts(String s) {
+    private void showContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
-        intent.putExtra("User", s);
-        startActivity(intent);
         pbLoading.setVisibility(View.GONE);
+        startActivity(intent);
         LoginActivity.this.finish();
     }
 }
