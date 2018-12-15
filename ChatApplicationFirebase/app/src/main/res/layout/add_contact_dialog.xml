@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tvEnterFriendsEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter Friend's Email:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        />
+
+    <EditText
+        android:id="@+id/etFriendsEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tvEnterFriendsEmail"/>
+
+
+</RelativeLayout>

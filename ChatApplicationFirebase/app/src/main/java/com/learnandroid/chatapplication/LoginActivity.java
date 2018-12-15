@@ -1,5 +1,6 @@
 package com.learnandroid.chatapplication;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignUp;
     ProgressBar pbLoading;
     FirebaseAuth mAuth;
+    DatabaseReference database;
     String TAG = "signin/singup";
 
     @Override
@@ -31,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        database = FirebaseDatabase.getInstance().getReference();
         setViews();
         mAuth = FirebaseAuth.getInstance();
 
@@ -63,7 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        update(mAuth.getCurrentUser());
+                        database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                                .replace('.', ',')).child("Status").setValue("Online");
+                        showContacts(mAuth.getCurrentUser().getEmail().split("@")[0]);
                     }else{
                         Toast.makeText(LoginActivity.this,
                                 String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT)
@@ -100,8 +111,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            update(user);
+                            database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                                    .replace('.', ',')).child("Email")
+                                    .setValue(mAuth.getCurrentUser().getEmail());
+                            database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                                    .replace('.', ',')).child("Status")
+                                    .setValue("Online");
+                            showContacts(mAuth.getCurrentUser().getEmail().split("@")[0]);
                         }else{
                             Toast.makeText(LoginActivity.this,
                                     String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
@@ -112,10 +128,11 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void update(FirebaseUser user) {
-        //Call the contacts activity
-        Log.d(TAG, "User Created: " + user.getDisplayName());
+    private void showContacts(String s) {
+        Intent intent = new Intent(this, ContactsActivity.class);
+        intent.putExtra("User", s);
+        startActivity(intent);
+        pbLoading.setVisibility(View.GONE);
+        LoginActivity.this.finish();
     }
-
-
 }

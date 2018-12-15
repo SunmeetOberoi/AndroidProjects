@@ -11,12 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/password_inpLayout"
         android:padding="5dp">
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/e_mail_hint"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:text="sunmeet.oberoi@gmail.com" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -26,12 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/llButtons"
         android:padding="5dp">
+
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password_hint"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:text="123456" />
     </android.support.design.widget.TextInputLayout>
 
 
