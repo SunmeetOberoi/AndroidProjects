@@ -5,4 +5,6 @@
     <string name="e_mail_hint">E-mail</string>
     <string name="password_hint">Password</string>
     <string name="title_activity_contacts">ContactsActivity</string>
+    <string name="add_contactdialog_hint">Enter Friend\'s Email:</string>
+    <string name="log_out">Log Out</string>
 </resources>
