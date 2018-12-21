@@ -54,10 +54,13 @@ public class ContactsActivity extends AppCompatActivity {
                                     database.child("Users").addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                                            TODO:Searching is not efficient
-                                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                                                if (id.equals(ds.child("Email").getValue(String.class)))
-                                                    Toast.makeText(ContactsActivity.this, "Added User", Toast.LENGTH_SHORT).show();
+//                                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
+//                                                if (id.equals(ds.child("Email").getValue(String.class))) {
+                                            if(dataSnapshot.hasChild(id.replace('.', ','))){
+                                                Toast.makeText(ContactsActivity.this, "Added user", Toast.LENGTH_SHORT).show();
+                                            }
+                                            else{
+                                                Toast.makeText(ContactsActivity.this, "User doesn't exists", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                         @Override
