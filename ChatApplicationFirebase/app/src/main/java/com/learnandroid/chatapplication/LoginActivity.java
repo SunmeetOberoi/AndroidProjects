@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import static com.learnandroid.chatapplication.ApplicationClass.databaseReference;
 import static com.learnandroid.chatapplication.ApplicationClass.mAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -27,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btnSignIn;
     Button btnSignUp;
     ProgressBar pbLoading;
-    DatabaseReference database;
     String TAG = "signin/singup";
 
     @Override
@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         if(mAuth.getCurrentUser() != null)
             showContacts();
@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                        databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
                                 .replace('.', ',')).child("Status").setValue("Online");
                         showContacts();
                     }else{
@@ -111,10 +111,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Email")
                                     .setValue(mAuth.getCurrentUser().getEmail());
-                            database.child("Users").child(mAuth.getCurrentUser().getEmail()
+                            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Status")
                                     .setValue("Online");
                             showContacts();

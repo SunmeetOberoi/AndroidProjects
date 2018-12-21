@@ -24,12 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.learnandroid.chatapplication.ApplicationClass.databaseReference;
 import static com.learnandroid.chatapplication.ApplicationClass.mAuth;
 
 public class ContactsActivity extends AppCompatActivity {
-
-    DatabaseReference database;
-    String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +37,7 @@ public class ContactsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        database = FirebaseDatabase.getInstance().getReference();
-        userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
-        toolbar.setTitle(userid.replace(',', '.').split("@")[0]);
+        toolbar.setTitle(mAuth.getCurrentUser().getEmail().split("@")[0]);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +54,7 @@ public class ContactsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 final String id = etFriendsEmail.getText().toString();
                                 if(!id.isEmpty()){
-                                    database.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    databaseReference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                                            for(DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -93,7 +89,8 @@ public class ContactsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            case R.id.actionLogOut : mAuth.signOut();
+            case R.id.actionLogOut : setStatus("Offline");
+                                     mAuth.signOut();
                                      startActivity(new Intent(this, LoginActivity.class));
                                      this.finish();
                                      break;
@@ -104,12 +101,22 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        database.child("Users").child(userid).child("Status").setValue("Offline");
+        setStatus("Offline");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        database.child("Users").child(userid).child("Status").setValue("Online");
+        setStatus("Online");
+    }
+
+    void setStatus(String status){
+        try {
+            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
+                    .replace('.', ',')).child("Status").setValue(status);
+        }catch(Exception e){
+            if(mAuth.getCurrentUser() != null)
+                Toast.makeText(this, "Couldn't do that", Toast.LENGTH_SHORT).show();
+        }
     }
 }
