@@ -35,9 +35,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        database = FirebaseDatabase.getInstance().getReference();
-        setViews();
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance().getReference();
+
+        if(mAuth.getCurrentUser() != null)
+            showContacts();
+
+        setViews();
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showContacts() {
         Intent intent = new Intent(this, ContactsActivity.class);
-        pbLoading.setVisibility(View.GONE);
         startActivity(intent);
         LoginActivity.this.finish();
     }

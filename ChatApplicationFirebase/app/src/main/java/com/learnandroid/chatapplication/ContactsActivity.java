@@ -29,6 +29,7 @@ import static com.learnandroid.chatapplication.ApplicationClass.mAuth;
 public class ContactsActivity extends AppCompatActivity {
 
     DatabaseReference database;
+    String userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,10 @@ public class ContactsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(mAuth.getCurrentUser().getEmail().split("@")[0]);
 
         database = FirebaseDatabase.getInstance().getReference();
+        userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
+        toolbar.setTitle(userid.replace(',', '.').split("@")[0]);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,13 +93,23 @@ public class ContactsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            case R.id.actionLogOut : database.child("Users").child(mAuth.getCurrentUser().getEmail()
-                                     .replace('.',',')).child("Status").setValue("Offline");
-                                     mAuth.signOut();
+            case R.id.actionLogOut : mAuth.signOut();
                                      startActivity(new Intent(this, LoginActivity.class));
                                      this.finish();
                                      break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        database.child("Users").child(userid).child("Status").setValue("Offline");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        database.child("Users").child(userid).child("Status").setValue("Online");
     }
 }
