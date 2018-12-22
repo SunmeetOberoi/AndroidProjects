@@ -1,4 +1,4 @@
-package com.learnandroid.chatapplication;
+package com.learnandroid.chatapplication.dataClasses;
 
 import android.app.Application;
 
