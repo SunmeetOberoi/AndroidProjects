@@ -36,7 +36,6 @@ public class ContactsActivity extends AppCompatActivity {
     List<ContactsModel> contacts = new ArrayList<>();
     RecyclerView rvContacts;
     ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
-    String msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,25 +72,26 @@ public class ContactsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 final String id = etFriendsEmail.getText().toString();
                                 // Check if user exists
-                                //TODO check if the friend is already added
                                 if(!mycontacts.contains(id.replace('.', ','))) {
                                     if (!id.isEmpty()) {
                                         if (!id.equals(mAuth.getCurrentUser().getEmail())) {
-                                            databaseReference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            //add the new contact to database
+                                            databaseReference.child("Database").child("Users")
+                                                    .addListenerForSingleValueEvent(new ValueEventListener() {
                                                 @Override
                                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                                     String mid = id.replace('.', ',');
                                                     String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
                                                     if (dataSnapshot.hasChild(mid)) {
                                                         Toast.makeText(ContactsActivity.this, "Added user", Toast.LENGTH_SHORT).show();
-                                                        databaseReference.child("Users").child(userid)
+                                                        databaseReference.child("Database").child("Users").child(userid)
                                                                 .child("Contacts").child(mid).setValue(id);
                                                         String chatCode;
                                                         if (userid.compareTo(mid) < 0)
                                                             chatCode = mid + "___" + userid;
                                                         else
                                                             chatCode = userid + "___" + mid;
-                                                        databaseReference.child("Messages").child(chatCode)
+                                                        databaseReference.child("Database").child("Messages").child(chatCode)
                                                                 .child("no one").setValue("no one");
                                                     } else {
                                                         Toast.makeText(ContactsActivity.this, "User doesn't exists", Toast.LENGTH_SHORT).show();
@@ -119,18 +119,30 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     void getContacts(){
-        databaseReference.child("Users").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Database").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mycontacts.clear();
-                for(DataSnapshot ds : dataSnapshot.child(mAuth.getCurrentUser()
+                for(DataSnapshot ds : dataSnapshot.child("Users").child(mAuth.getCurrentUser()
                         .getEmail().replace('.', ',')).child("Contacts").getChildren()){
                     mycontacts.add(ds.getKey());
                 }
                 contacts.clear();
                 for(String name : mycontacts){
-                    contacts.add(new ContactsModel(name, dataSnapshot.child(name).child("Status")
-                            .getValue().toString(), getLastMsg(name)));
+
+                    String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
+                    String chatCode;
+                    if(userid.compareTo(name) < 0)
+                        chatCode = name + "___" + userid;
+                    else
+                        chatCode = userid + "___" + name;
+                    String msg="";
+                    for(DataSnapshot ds : dataSnapshot.child("Messages").child(chatCode).getChildren()) {
+                        msg = ds.getValue().toString();
+                        break;
+                    }
+                    contacts.add(new ContactsModel(name, dataSnapshot.child("Users").child(name).child("Status")
+                            .getValue().toString(), msg));
                 }
                 contactsRecyclerViewAdapter.notifyDataSetChanged();
             }
@@ -141,30 +153,31 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-    private String getLastMsg(String name) {
-        String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
-        String chatCode;
-        if(userid.compareTo(name) < 0)
-            chatCode = name + "___" + userid;
-        else
-            chatCode = userid + "___" + name;
-
-        databaseReference.child("Messages").child(chatCode).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    msg = ds.getValue().toString();
-                    break;
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        return msg;
-    }
+//    private String getLastMsg(String name) {
+//        String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
+//        String chatCode;
+//        if(userid.compareTo(name) < 0)
+//            chatCode = name + "___" + userid;
+//        else
+//            chatCode = userid + "___" + name;
+//
+//        databaseReference.child("Messages").child(chatCode).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    msg = ds.getValue().toString();
+//                    break;
+//                }
+//                contactsRecyclerViewAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        return msg;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -199,7 +212,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     void setStatus(String status){
         try {
-            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
+            databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
                     .replace('.', ',')).child("Status").setValue(status);
         }catch(Exception e){
             if(mAuth.getCurrentUser() != null)

@@ -5,14 +5,6 @@ public class ContactsModel {
     String status;
     String lastMsg;
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setLastMsg(String lastMsg) {
-        this.lastMsg = lastMsg;
-    }
-
     public String getName() {
         return name;
     }

@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
+                        databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
                                 .replace('.', ',')).child("Status").setValue("Online");
                         showContacts();
                     }else{
@@ -111,10 +111,10 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
+                            databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Email")
                                     .setValue(mAuth.getCurrentUser().getEmail());
-                            databaseReference.child("Users").child(mAuth.getCurrentUser().getEmail()
+                            databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Status")
                                     .setValue("Online");
                             showContacts();
