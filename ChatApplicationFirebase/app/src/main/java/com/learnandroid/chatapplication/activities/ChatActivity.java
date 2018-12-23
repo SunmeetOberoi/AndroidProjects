@@ -6,6 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -14,16 +19,22 @@ import com.learnandroid.chatapplication.R;
 import com.learnandroid.chatapplication.adapter.MessagesRecyclerViewAdapter;
 import com.learnandroid.chatapplication.dataClasses.MessagesModel;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.databaseReference;
+import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.mAuth;
 
 public class ChatActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     List<MessagesModel> messages = new ArrayList<>();
     RecyclerView rvMessages;
+    ImageButton ibSendMessage;
+    EditText etMessage;
     MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
 
 
@@ -67,6 +78,20 @@ public class ChatActivity extends AppCompatActivity {
         
         readMessages();
 
+        etMessage = (EditText) findViewById(R.id.etMessage);
+        ibSendMessage = (ImageButton) findViewById(R.id.ibSendMessage);
+        ibSendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> newMessage = new HashMap<>();
+                newMessage.put("from", mAuth.getCurrentUser().getEmail().replace('.', ','));
+                newMessage.put("value", etMessage.getText().toString());
+                databaseReference.child("Database").child("Messages").child(getIntent()
+                        .getStringExtra("ChatCode")).push().setValue(newMessage);
+                etMessage.setText("");
+            }
+        });
+
     }
 
     private void readMessages() {
@@ -101,5 +126,4 @@ public class ChatActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
-
 }
