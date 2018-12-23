@@ -9,6 +9,9 @@ public class MessagesModel {
         this.from = from;
     }
 
+    public MessagesModel() {
+    }
+
     public String getValue() {
         return value;
     }

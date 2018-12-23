@@ -70,6 +70,30 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void readMessages() {
+        databaseReference.child("Database").child("Messages").child(getIntent().getStringExtra("ChatCode"))
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        messages.clear();
+                        int k=0;
+                        for(DataSnapshot ds : dataSnapshot.getChildren()){
+                            if(k<=50){
+                                MessagesModel message = ds.getValue(MessagesModel.class);
+                                if(!message.getFrom().equals("no one"))
+                                    messages.add(message);
+                            }
+                            else
+                                break;
+                            k++;
+                        }
+                        messagesRecyclerViewAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
