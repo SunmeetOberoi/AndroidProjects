@@ -7,10 +7,27 @@
     tools:context=".activities.ChatActivity"
     tools:showIn="@layout/activity_chat">
 
-    <!--<EditText-->
-        <!--android:id="@+id/etMessage"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"/>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:hint="@string/enter_your_message_hint"/>
+
+        <ImageButton
+            android:id="@+id/ibSendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_send" />
+
+
+    </LinearLayout>
 
 </RelativeLayout>
