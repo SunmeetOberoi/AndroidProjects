@@ -15,16 +15,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.learnandroid.chatapplication.R;
 import com.learnandroid.chatapplication.adapter.ContactsRecyclerViewAdapter;
 import com.learnandroid.chatapplication.dataClasses.ContactsModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.databaseReference;
@@ -36,6 +39,7 @@ public class ContactsActivity extends AppCompatActivity {
     List<ContactsModel> contacts = new ArrayList<>();
     RecyclerView rvContacts;
     ContactsRecyclerViewAdapter contactsRecyclerViewAdapter;
+    ProgressBar pbContactsLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class ContactsActivity extends AppCompatActivity {
         toolbar.setTitle(mAuth.getCurrentUser().getEmail().split("@")[0]);
 
         rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+        pbContactsLoading = (ProgressBar) findViewById(R.id.pbContactsLoading);
         contactsRecyclerViewAdapter = new ContactsRecyclerViewAdapter(
                 contacts, this);
         getContacts();
@@ -86,13 +91,17 @@ public class ContactsActivity extends AppCompatActivity {
                                                         Toast.makeText(ContactsActivity.this, "Added user", Toast.LENGTH_SHORT).show();
                                                         databaseReference.child("Database").child("Users").child(userid)
                                                                 .child("Contacts").child(mid).setValue(id);
+                                                        HashMap<String, String> basemsg = new HashMap<>();
+                                                        basemsg.put("from", "no one");
+                                                        basemsg.put("value", "nothing");
                                                         String chatCode;
                                                         if (userid.compareTo(mid) < 0)
                                                             chatCode = mid + "___" + userid;
                                                         else
                                                             chatCode = userid + "___" + mid;
                                                         databaseReference.child("Database").child("Messages").child(chatCode)
-                                                                .child("no one").setValue("no one");
+                                                                .push().setValue(basemsg);
+
                                                     } else {
                                                         Toast.makeText(ContactsActivity.this, "User doesn't exists", Toast.LENGTH_SHORT).show();
                                                     }
@@ -122,6 +131,7 @@ public class ContactsActivity extends AppCompatActivity {
         databaseReference.child("Database").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pbContactsLoading.setVisibility(View.GONE);
                 mycontacts.clear();
                 for(DataSnapshot ds : dataSnapshot.child("Users").child(mAuth.getCurrentUser()
                         .getEmail().replace('.', ',')).child("Contacts").getChildren()){
@@ -129,18 +139,16 @@ public class ContactsActivity extends AppCompatActivity {
                 }
                 contacts.clear();
                 for(String name : mycontacts){
-
-                    String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
+                    String msg="";
                     String chatCode;
-                    if(userid.compareTo(name) < 0)
+                    String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
+                    if (userid.compareTo(name) < 0)
                         chatCode = name + "___" + userid;
                     else
                         chatCode = userid + "___" + name;
-                    String msg="";
                     for(DataSnapshot ds : dataSnapshot.child("Messages").child(chatCode).getChildren()) {
-                        msg = ds.getValue().toString();
-                        break;
-                    }
+                            msg = ds.child("value").getValue().toString();
+                        }
                     contacts.add(new ContactsModel(name, dataSnapshot.child("Users").child(name).child("Status")
                             .getValue().toString(), msg));
                 }
@@ -152,32 +160,6 @@ public class ContactsActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private String getLastMsg(String name) {
-//        String userid = mAuth.getCurrentUser().getEmail().replace('.', ',');
-//        String chatCode;
-//        if(userid.compareTo(name) < 0)
-//            chatCode = name + "___" + userid;
-//        else
-//            chatCode = userid + "___" + name;
-//
-//        databaseReference.child("Messages").child(chatCode).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    msg = ds.getValue().toString();
-//                    break;
-//                }
-//                contactsRecyclerViewAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        return msg;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

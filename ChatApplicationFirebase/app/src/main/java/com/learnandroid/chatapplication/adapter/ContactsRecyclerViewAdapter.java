@@ -40,7 +40,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
             holder.ivstatus.setImageResource(R.drawable.ic_online);
         else
             holder.ivstatus.setImageResource(R.drawable.ic_offline);
-        if(!contact.getLastMsg().equals("no one"))
+        if(!contact.getLastMsg().equals("nothing"))
             holder.tvLastMsg.setText(contact.getLastMsg());
         else
             holder.tvLastMsg.setText("");
