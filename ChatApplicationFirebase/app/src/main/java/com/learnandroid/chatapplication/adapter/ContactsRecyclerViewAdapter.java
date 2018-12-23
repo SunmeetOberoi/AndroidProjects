@@ -1,9 +1,9 @@
 package com.learnandroid.chatapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.learnandroid.chatapplication.R;
+import com.learnandroid.chatapplication.activities.ChatActivity;
 import com.learnandroid.chatapplication.dataClasses.ContactsModel;
 
 import java.util.List;
+
+import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.mAuth;
 
 public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRecyclerViewAdapter.ViewHolder> {
 
@@ -51,7 +54,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         return contacts.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvFriendName;
         ImageView ivstatus;
         TextView tvLastMsg;
@@ -60,6 +63,22 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
             tvFriendName = (TextView) itemView.findViewById(R.id.tvFriendName);
             ivstatus = (ImageView) itemView.findViewById(R.id.ivStatus);
             tvLastMsg = (TextView) itemView.findViewById(R.id.tvLastMsg);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(mContext, ChatActivity.class);
+            String chatCode, userid = mAuth.getCurrentUser().getEmail().replace('.', ','),
+                name = this.tvFriendName.getText().toString();
+            if (userid.compareTo(name) < 0)
+                chatCode = name + "___" + userid;
+            else
+                chatCode = userid + "___" + name;
+            intent.putExtra("ChatCode", chatCode);
+            intent.putExtra("Friend", name);
+            mContext.startActivity(intent);
+
         }
     }
 }
