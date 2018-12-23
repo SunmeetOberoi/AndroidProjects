@@ -2,22 +2,30 @@ package com.learnandroid.chatapplication.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.learnandroid.chatapplication.R;
+import com.learnandroid.chatapplication.adapter.MessagesRecyclerViewAdapter;
+import com.learnandroid.chatapplication.dataClasses.MessagesModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.databaseReference;
 
 public class ChatActivity extends AppCompatActivity {
 
     Toolbar toolbar;
+    List<MessagesModel> messages = new ArrayList<>();
+    RecyclerView rvMessages;
+    MessagesRecyclerViewAdapter messagesRecyclerViewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +43,7 @@ public class ChatActivity extends AppCompatActivity {
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.getValue().equals("Online"))
+                        if (dataSnapshot.getValue().equals("Online"))
                             getSupportActionBar().setSubtitle("Online");
                         else
                             getSupportActionBar().setSubtitle("");
@@ -47,8 +55,21 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
+        rvMessages = (RecyclerView) findViewById(R.id.rvMessages);
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+        llm.setStackFromEnd(true);
 
+        rvMessages.setHasFixedSize(true);
+        rvMessages.setLayoutManager(llm);
+        messagesRecyclerViewAdapter = new MessagesRecyclerViewAdapter(messages, this, 
+                getIntent().getStringExtra("Friend"));
+        rvMessages.setAdapter(messagesRecyclerViewAdapter);
+        
+        readMessages();
 
+    }
+
+    private void readMessages() {
     }
 
     @Override

@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        if(mAuth.getCurrentUser() != null)
+        if (mAuth.getCurrentUser() != null)
             showContacts();
 
         setViews();
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validInput()) {
+                if (validInput()) {
                     pbLoading.setVisibility(View.VISIBLE);
                     createUser();
                 }
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validInput()) {
+                if (validInput()) {
                     pbLoading.setVisibility(View.VISIBLE);
                     signinUser();
                 }
@@ -67,23 +67,23 @@ public class LoginActivity extends AppCompatActivity {
 
     private void signinUser() {
         mAuth.signInWithEmailAndPassword(etEmail.getText().toString().trim(),
-            etPassword.getText().toString().trim())
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
-                                .replace('.', ',')).child("Status").setValue("Online");
-                        showContacts();
-                    }else{
-                        Toast.makeText(LoginActivity.this,
-                                String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT)
-                        .show();
-                        pbLoading.setVisibility(View.GONE);
-                        Log.d(TAG, String.valueOf(task.getException()));
+                etPassword.getText().toString().trim())
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
+                                    .replace('.', ',')).child("Status").setValue("Online");
+                            showContacts();
+                        } else {
+                            Toast.makeText(LoginActivity.this,
+                                    String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT)
+                                    .show();
+                            pbLoading.setVisibility(View.GONE);
+                            Log.d(TAG, String.valueOf(task.getException()));
+                        }
                     }
-                }
-            });
+                });
     }
 
     private boolean validInput() {
@@ -97,11 +97,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setViews() {
-        etEmail = (EditText)findViewById(R.id.etEmail);
-        etPassword = (EditText)findViewById(R.id.etPassword);
-        btnSignIn = (Button)findViewById(R.id.btnSignIn);
-        btnSignUp = (Button)findViewById(R.id.btnSignUp);
-        pbLoading = (ProgressBar)findViewById(R.id.pbLoading);
+        etEmail = (EditText) findViewById(R.id.etEmail);
+        etPassword = (EditText) findViewById(R.id.etPassword);
+        btnSignIn = (Button) findViewById(R.id.btnSignIn);
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        pbLoading = (ProgressBar) findViewById(R.id.pbLoading);
     }
 
     private void createUser() {
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
                                     .replace('.', ',')).child("Email")
                                     .setValue(mAuth.getCurrentUser().getEmail());
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .replace('.', ',')).child("Status")
                                     .setValue("Online");
                             showContacts();
-                        }else{
+                        } else {
                             Toast.makeText(LoginActivity.this,
                                     String.valueOf(task.getException().getMessage()), Toast.LENGTH_SHORT).show();
                             pbLoading.setVisibility(View.GONE);

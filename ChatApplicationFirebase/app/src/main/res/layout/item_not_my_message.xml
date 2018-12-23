@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/not_my_message"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/message_margin"
+        android:textColor="#000000"
+        android:padding="@dimen/message_padding"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

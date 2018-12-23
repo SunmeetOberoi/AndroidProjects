@@ -39,11 +39,11 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ContactsModel contact = contacts.get(position);
         holder.tvFriendName.setText(contact.getName());
-        if(contact.getStatus().equals("Online"))
+        if (contact.getStatus().equals("Online"))
             holder.ivstatus.setImageResource(R.drawable.ic_online);
         else
             holder.ivstatus.setImageResource(R.drawable.ic_offline);
-        if(!contact.getLastMsg().equals("nothing"))
+        if (!contact.getLastMsg().equals("nothing"))
             holder.tvLastMsg.setText(contact.getLastMsg());
         else
             holder.tvLastMsg.setText("");
@@ -58,6 +58,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         TextView tvFriendName;
         ImageView ivstatus;
         TextView tvLastMsg;
+
         ViewHolder(View itemView) {
             super(itemView);
             tvFriendName = (TextView) itemView.findViewById(R.id.tvFriendName);
@@ -70,7 +71,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         public void onClick(View v) {
             Intent intent = new Intent(mContext, ChatActivity.class);
             String chatCode, userid = mAuth.getCurrentUser().getEmail().replace('.', ','),
-                name = this.tvFriendName.getText().toString();
+                    name = this.tvFriendName.getText().toString();
             if (userid.compareTo(name) < 0)
                 chatCode = name + "___" + userid;
             else

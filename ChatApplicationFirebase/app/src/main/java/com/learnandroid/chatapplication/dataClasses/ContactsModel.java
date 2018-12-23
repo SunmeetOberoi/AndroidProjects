@@ -5,6 +5,12 @@ public class ContactsModel {
     String status;
     String lastMsg;
 
+    public ContactsModel(String name, String status, String lastMsg) {
+        this.name = name;
+        this.status = status;
+        this.lastMsg = lastMsg;
+    }
+
     public String getName() {
         return name;
     }
@@ -15,11 +21,5 @@ public class ContactsModel {
 
     public String getLastMsg() {
         return lastMsg;
-    }
-
-    public ContactsModel(String name, String status, String lastMsg) {
-        this.name = name;
-        this.status = status;
-        this.lastMsg = lastMsg;
     }
 }
