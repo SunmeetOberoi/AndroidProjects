@@ -1,3 +1,2 @@
 # ChatApplicationFirebase
-A Chat application which uses firebase as it's backend.  
-[Under Development] :last_quarter_moon:
+A Chat application which uses firebase realtime database as it's backend.
