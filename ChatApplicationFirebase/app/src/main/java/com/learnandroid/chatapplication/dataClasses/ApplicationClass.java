@@ -8,5 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 public class ApplicationClass extends Application {
     public static FirebaseAuth mAuth;
     public static DatabaseReference databaseReference;
+    public static Boolean isAChatOpened = false;
 
 }

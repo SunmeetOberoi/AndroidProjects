@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.learnandroid.chatapplication.R;
 import com.learnandroid.chatapplication.adapter.ContactsRecyclerViewAdapter;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.databaseReference;
+import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.isAChatOpened;
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.mAuth;
 
 public class ContactsActivity extends AppCompatActivity {
@@ -184,9 +186,12 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        setStatus("Offline");
+        if(!isAChatOpened) {
+            setStatus("Offline");
+        }
+        else
+            isAChatOpened = false;
     }
-
 
     @Override
     protected void onStart() {

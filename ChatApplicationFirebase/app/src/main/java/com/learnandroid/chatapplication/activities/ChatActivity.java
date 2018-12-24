@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.learnandroid.chatapplication.R;
 import com.learnandroid.chatapplication.adapter.MessagesRecyclerViewAdapter;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.databaseReference;
+import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.isAChatOpened;
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.mAuth;
 
 public class ChatActivity extends AppCompatActivity {
@@ -121,9 +123,41 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
+    Boolean backToContacts = false;
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backToContacts = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!backToContacts)
+            setStatus("Offline");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setStatus("Online");
+    }
+
+    void setStatus(String status) {
+        try {
+            databaseReference.child("Database").child("Users").child(mAuth.getCurrentUser().getEmail()
+                    .replace('.', ',')).child("Status").setValue(status);
+        } catch (Exception e) {
+            if (mAuth.getCurrentUser() != null)
+                Toast.makeText(this, "Couldn't do that", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

@@ -16,6 +16,7 @@ import com.learnandroid.chatapplication.dataClasses.ContactsModel;
 
 import java.util.List;
 
+import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.isAChatOpened;
 import static com.learnandroid.chatapplication.dataClasses.ApplicationClass.mAuth;
 
 public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRecyclerViewAdapter.ViewHolder> {
@@ -78,6 +79,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
                 chatCode = userid + "___" + name;
             intent.putExtra("ChatCode", chatCode);
             intent.putExtra("Friend", name);
+            isAChatOpened = true;
             mContext.startActivity(intent);
 
         }
