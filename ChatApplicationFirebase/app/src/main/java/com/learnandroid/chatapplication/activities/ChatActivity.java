@@ -85,12 +85,14 @@ public class ChatActivity extends AppCompatActivity {
         ibSendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> newMessage = new HashMap<>();
-                newMessage.put("from", mAuth.getCurrentUser().getEmail().replace('.', ','));
-                newMessage.put("value", etMessage.getText().toString());
-                databaseReference.child("Database").child("Messages").child(getIntent()
-                        .getStringExtra("ChatCode")).push().setValue(newMessage);
-                etMessage.setText("");
+                if(!etMessage.getText().toString().trim().isEmpty()) {
+                    HashMap<String, String> newMessage = new HashMap<>();
+                    newMessage.put("from", mAuth.getCurrentUser().getEmail().replace('.', ','));
+                    newMessage.put("value", etMessage.getText().toString());
+                    databaseReference.child("Database").child("Messages").child(getIntent()
+                            .getStringExtra("ChatCode")).push().setValue(newMessage);
+                    etMessage.setText("");
+                }
             }
         });
 
