@@ -149,6 +149,11 @@ public class ContactsActivity extends AppCompatActivity {
                         chatCode = userid + "___" + name;
                     for (DataSnapshot ds : dataSnapshot.child("Messages").child(chatCode).getChildren()) {
                         msg = ds.child("value").getValue().toString();
+                        //keep only first 25 characters
+                        if(msg.length()>25) {
+                            msg = msg.substring(0, 25);
+                            msg = msg.concat("...");
+                        }
                     }
                     contacts.add(new ContactsModel(name, dataSnapshot.child("Users").child(name).child("Status")
                             .getValue().toString(), msg));
