@@ -114,6 +114,7 @@ public class ChatActivity extends AppCompatActivity {
                             k++;
                         }
                         messagesRecyclerViewAdapter.notifyDataSetChanged();
+                        rvMessages.scrollToPosition(messagesRecyclerViewAdapter.getItemCount()-1);
                     }
 
                     @Override
