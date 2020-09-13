@@ -39,7 +39,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ContactsModel contact = contacts.get(position);
-        holder.tvFriendName.setText(contact.getName());
+        holder.tvFriendName.setText(contact.getName().replace(',','.'));
         if (contact.getStatus().equals("Online"))
             holder.ivstatus.setImageResource(R.drawable.ic_online);
         else
@@ -72,7 +72,7 @@ public class ContactsRecyclerViewAdapter extends RecyclerView.Adapter<ContactsRe
         public void onClick(View v) {
             Intent intent = new Intent(mContext, ChatActivity.class);
             String chatCode, userid = mAuth.getCurrentUser().getEmail().replace('.', ','),
-                    name = this.tvFriendName.getText().toString();
+                    name = this.tvFriendName.getText().toString().replace('.', ',');
             if (userid.compareTo(name) < 0)
                 chatCode = name + "___" + userid;
             else
