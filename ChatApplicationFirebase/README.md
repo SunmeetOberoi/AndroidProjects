@@ -3,7 +3,7 @@ A real time Chat application that uses firebase realtime database as the backend
 
 ## Sample
 
-<img src="images/Sample.gif" width=40% alt="Demonstration GIF">
+<img src="images/Sample.gif" height=10% alt="Demonstration GIF">
 
 ## 📝 License
 
